@@ -11,7 +11,7 @@ import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "br.com.estantedigital.api")
-@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "not @template")
-public class RunCucumberTest {
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "br.com.estantedigital.api.steps")
+@ConfigurationParameter(key = FILTER_TAGS_PROPERTY_NAME, value = "@regression")
+public class RegressionRunnerTest {
 }

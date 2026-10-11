@@ -20,19 +20,18 @@ public class ApiClient {
         this.requestSpecification = builder.build();
     }
 
-    public Response get(String path) {
-        return given().spec(requestSpecification).when().get(path);
-    }
+    public Response request(String method, String path, String body) {
+        RequestSpecification request = given().spec(requestSpecification);
+        if (body != null) {
+            request.body(body);
+        }
 
-    public Response post(String path, Object body) {
-        return given().spec(requestSpecification).body(body).when().post(path);
-    }
-
-    public Response put(String path, Object body) {
-        return given().spec(requestSpecification).body(body).when().put(path);
-    }
-
-    public Response delete(String path) {
-        return given().spec(requestSpecification).when().delete(path);
+        return switch (method.toUpperCase()) {
+            case "GET" -> request.when().get(path);
+            case "POST" -> request.when().post(path);
+            case "PUT" -> request.when().put(path);
+            case "DELETE" -> request.when().delete(path);
+            default -> throw new IllegalArgumentException("Metodo HTTP nao suportado: " + method);
+        };
     }
 }
