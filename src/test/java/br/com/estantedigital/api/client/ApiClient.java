@@ -1,7 +1,6 @@
 package br.com.estantedigital.api.client;
 
 import br.com.estantedigital.api.config.ApiConfig;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -9,19 +8,19 @@ import io.restassured.specification.RequestSpecification;
 import static io.restassured.RestAssured.given;
 
 public class ApiClient {
-    private final RequestSpecification requestSpecification;
+    private final ApiConfig config;
 
     public ApiClient(ApiConfig config) {
-        RequestSpecBuilder builder = new RequestSpecBuilder()
-                .setBaseUri(config.baseUrl())
-                .setAccept(ContentType.JSON)
-                .setContentType(ContentType.JSON);
-        config.token().ifPresent(token -> builder.addHeader("Authorization", "Bearer " + token));
-        this.requestSpecification = builder.build();
+        this.config = config;
     }
 
     public Response request(String method, String path, String body) {
-        RequestSpecification request = given().spec(requestSpecification);
+        RequestSpecification request = given()
+                .baseUri(config.baseUrl())
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON);
+        config.token().ifPresent(token -> request.header("Authorization", "Bearer " + token));
+
         if (body != null) {
             request.body(body);
         }

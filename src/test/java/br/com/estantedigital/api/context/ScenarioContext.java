@@ -13,6 +13,10 @@ public class ScenarioContext {
         this.response = response;
     }
 
+    public boolean hasResponse() {
+        return response != null;
+    }
+
     public Response response() {
         if (response == null) {
             throw new IllegalStateException("Nenhuma resposta HTTP foi armazenada neste cenario");
@@ -20,7 +24,7 @@ public class ScenarioContext {
         return response;
     }
 
-    public String resolve(String value) {
+    public String replacePlaceholders(String value) {
         String resolved = value
                 .replace("${unique}", uniqueValue)
                 .replace("${registration}", Integer.toString(registrationNumber));
